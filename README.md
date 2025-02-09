@@ -1,3 +1,10 @@
+
+
+
+
+
+https://github.com/user-attachments/assets/ef137406-931c-4620-87f3-71bec23787c3
+
 # MemoryLane - A Website for People with Alzheimer's
 
 **MemoryLane** is a supportive platform designed to help individuals with Alzheimer's disease or memory-related challenges by allowing them to log their memories, share their experiences, and interact with an AI companion. It offers an intuitive interface, a safe space for sharing, and personalized interactions with an AI friend that helps users stay engaged and connected.
