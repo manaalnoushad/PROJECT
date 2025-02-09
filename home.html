@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Aid for Alzheimer's</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+        <header class="header">
+          <nav class="navbar">
+            <h1 style="font-family: 'Poppins', sans-serif;">MemoryPal</h1>
+            <ul class="nav-links">
+              <li><a href="#journal">Memory Journal</a></li>
+              <li><a href="#reminders">Daily Needs</a></li>
+              <li><a href="#favorites">Favorite People</a></li>
+            </ul>
+            <img src="DALL·E 2025-02-09 03.45.30 - A creative and elegant grayscale logo design for 'MemoryPal,' incorporating abstract artistic elements. The logo features a beautifully stylized brain.webp" alt="Logo" width="85" height="80">
+          </nav>
+        </header>
+
+  <main>
+    <section class="title-section">
+      <h1 class="title" style="font-family:cursive;">Log into your Memory</h1>
+    </section>
+
+    <section id="journal" class="memory-section">
+      <h2 style="font-family: 'Poppins', sans-serif;">Memory Journal</h2>
+        <p>Record precious moments, upload photos, and revisit cherished memories.</p>
+        <button onclick="window.location.href='memory.html'">Add New Memory</button>
+        <ul id="memory-list" style="margin-top: 1rem; list-style-type: none; padding: 0;"></ul>
+      </section>
+    <section id="reminders" class="reminder-section">
+      <h2 style="font-family: 'Poppins', sans-serif;">Daily Needs</h2>
+      <p>Stay on top of your daily schedule, including meals, medications, and important tasks.</p>
+      <button onclick="window.location.href='daily-needs.html'" style="margin-top: 1rem;">Set Daily Needs</button>
+    </section>
+
+    <section id="favorites" class="favorites-section">
+      <h2 style="font-family: 'Poppins', sans-serif;">Talk to Pal</h2>
+      <p>Remember and reconnect with the people you love the most.</p>
+      <button onclick="window.location.href='featureai.html'" style="margin-top: 1rem;">Hey Pal!</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Memory Aid. All Rights Reserved.</p>
+  </footer>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      background-color: rgb(167, 90, 90);
+      padding: 3rem 4rem;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+    }
+
+    .title-section {
+      background-image:image('journal.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 4rem 2rem;
+      text-align: center;
+      color: rgba(229, 115, 143, 0.925);
+    }
+
+    .title {
+      font-size: 3rem;
+      text-shadow: 2px 2px 5px rgba(222, 203, 203, 0.5);
+      background-image:image('journal.jpg');
+    }
+
+    .memory-section, .reminder-section, .games-section, .favorites-section {
+      padding: 2rem;
+      background-color:gainsboro;
+      margin: 1rem auto;
+      max-width: 800px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    button {
+      background-color:rgb(82, 65, 65);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1d77c0;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    footer {
+      background-color: #302c2c;
+      color: rgb(206, 225, 171);
+      text-align: center;
+      padding: 1rem 0;
+      margin-top: auto;
+    }
+  </style>
+
+  <script>
+    function addMemory() {
+      const memoryList = document.getElementById('memory-list');
+      const memoryText = prompt('Enter a memory to record:');
+      if (memoryText) {
+        const listItem = document.createElement('li');
+        listItem.textContent = memoryText;
+        listItem.style.padding = '0.5rem';
+        listItem.style.borderBottom = '1px solid #ddd';
+        memoryList.appendChild(listItem);
+      }
+    }
+  </script>
+</body>
+</html>
+

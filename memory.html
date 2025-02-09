@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Memory</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
+      padding: 2rem;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2f3031;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    input[type="text"], textarea, input[type="file"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus, textarea:focus, input[type="file"]:focus {
+      border-color: #353535;
+      outline: none;
+    }
+
+    button {
+      background-color: #424343;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #a3a5a7;
+      transform: translateY(-3px);
+    }
+
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Add New Memory</h1>
+    <form id="memory-form">
+      <label for="memory-title">Memory Title:</label>
+      <input type="text" id="memory-title" name="title" placeholder="Enter memory title..." required>
+
+      <label for="memory-description">Memory Description:</label>
+      <textarea id="memory-description" name="description" rows="5" placeholder="Describe the memory..." required></textarea>
+
+      <label for="memory-media">Upload Photo or Video:</label>
+      <input type="file" id="memory-media" name="media" accept="image/*,video/*">
+
+      <button type="submit">Save Memory</button>
+      <div class="success-message" id="success-message">Memory saved successfully!</div>
+    </form>
+    <button onclick="window.location.href='home.html'" style="margin-top: 1rem;">Back to Home</button>
+    <button onclick="window.location.href='viewmemory.html'" style="margin-top: 1rem;">View Daily Needs</button>
+  </div>
+
+  <script>
+    document.getElementById('memory-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('memory-title').value;
+      const description = document.getElementById('memory-description').value;
+      const mediaFile = document.getElementById('memory-media').files[0];
+
+      if (title && description) {
+        let message = `Memory Saved!\nTitle: ${title}\nDescription: ${description}`;
+        if (mediaFile) {
+          message += `\nFile Uploaded: ${mediaFile.name}`;
+        }
+        document.getElementById('success-message').style.display = 'block';
+        setTimeout(() => {
+          window.location.href = 'home.html';
+        }, 2000);
+      } else {
+        alert('Please fill in both the title and description.');
+      }
+    });
+  </script>
+</body>
+</html>

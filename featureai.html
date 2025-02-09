@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Friend for Alzheimer's Support</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f0f8ff;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .chat-box {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #ce1818c0;
+    }
+
+    #conversation {
+      background: #f9f9f9;
+      height: 200px;
+      overflow-y: auto;
+      padding: 1rem;
+      margin: 1rem 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    button {
+      background-color: #d43444;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #4a14df;
+      transform: translateY(-3px);
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-box">
+    <h1>Talk to Your AI Friend</h1>
+    <div id="conversation">
+      <p><strong>AI Friend:</strong> Hi there! How are you feeling today?</p>
+    </div>
+    <button id="talk-button">Start Talking</button>
+  </div>
+
+  <script>
+    const conversationDiv = document.getElementById('conversation');
+    const talkButton = document.getElementById('talk-button');
+
+    const responses = [
+      "I'm so happy to hear from you. How has your day been?",
+      "What do you feel like talking about today?",
+      "Tell me something you love to do!",
+      "You're doing great! Tell me more.",
+      "Do you remember a happy memory today?",
+      "How are you feeling physically? Have you had any exercise today?",
+      "It's important to stay hydrated. Did you drink enough water today?",
+      "Are there any special plans for today or tomorrow?",
+      "Have you talked to any friends or family recently?",
+      "How do you usually start your mornings?", 
+      "Have you eaten anything delicious today? What was it?",
+      "Do you remember a favorite place you've visited before? I'd love to hear about it.",
+      "Memories are precious. Can you tell me about your favorite childhood story?",
+      "One memory tip is to write things down in a notebook. Have you tried journaling your thoughts?",
+      "Repeating names and facts can help strengthen memory recall. Have you done this recently?",
+      "Playing puzzles or simple word games can boost your memory. Do you enjoy puzzles?",
+      "Regular conversations with friends help keep your mind active. Who's someone you'd like to call today?",
+      "Mindfulness exercises, like deep breathing, can help memory and focus. Have you tried that before?",
+      "Music is great for memory! Do you have a favorite song from the past that makes you happy?",
+      "You're doing great! Remember that every little effort counts toward improving your memory."
+    ];
+
+    const speechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+    const synth = window.speechSynthesis;
+
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1;
+      synth.speak(utterance);
+      displayMessage("AI Friend", text);
+    }
+
+    function displayMessage(sender, message) {
+      const messageParagraph = document.createElement('p');
+      messageParagraph.innerHTML = `<strong>${sender}:</strong> ${message}`;
+      conversationDiv.appendChild(messageParagraph);
+      conversationDiv.scrollTop = conversationDiv.scrollHeight;
+    }
+
+    function startConversation() {
+      if (!speechRecognition) {
+        speak("Sorry, your browser doesn't support speech recognition.");
+        return;
+      }
+
+      const recognition = new speechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.start();
+      speak("I'm listening. Tell me something!");
+
+      recognition.onresult = function (event) {
+        const userMessage = event.results[0][0].transcript;
+        displayMessage("You", userMessage);
+
+        // Simple response matching based on keywords
+        let response = responses[Math.floor(Math.random() * responses.length)];
+        if (userMessage.includes("happy")) {
+          response = "Happiness is such a wonderful thing! What made you happy today?";
+        } else if (userMessage.includes("friend")) {
+          response = "Friends are the best! Who's your favorite friend?";
+        } else if (userMessage.includes("remember")) {
+          response = "Memories are precious. Do you have a favorite memory?";
+        } else if (userMessage.includes("exercise")) {
+          response = "Exercise keeps us healthy. Do you prefer walking or stretching?";
+        } else if (userMessage.includes("family")) {
+          response = "Family is so important. Have you talked to anyone today?";
+        } else if (userMessage.includes("food")) {
+          response = "Yum! What's your favorite meal or snack?";
+        } else if (userMessage.includes("memory tip")) {
+          response = "One memory tip is to log your memories in our website.";
+        } else if (userMessage.includes("music")) {
+          response = "Listening to familiar songs can trigger wonderful memories.";
+        }else if(userMessage.includes("not good")) {
+          response="Sorry to hear that. I'm here for you.";
+        }else if(userMessage.includes("bye")) {
+          response="I loved talking to you, Tell me more when you're free. Have a nice day.";
+        }
+         
+
+        speak(response);
+      };
+
+      recognition.onerror = function () {
+        speak("I didn't catch that. Could you please say it again?");
+      };
+    }
+
+    talkButton.addEventListener('click', startConversation);
+  </script>
+</body>
+</html>
+

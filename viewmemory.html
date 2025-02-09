@@ -1,0 +1,106 @@
+
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Daily Needs</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2f2f2f;
+    }
+
+    .memory-entry {
+      background: #f0f8ff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .memory-entry img, .memory-entry video {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+    }
+
+    .back-btn {
+      display: block;
+      background-color: #6c757d;
+      color: white;
+      text-align: center;
+      padding: 0.75rem;
+      text-decoration: none;
+      margin-top: 1rem;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+
+    .back-btn:hover {
+      background-color: #5a6268;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>View Daily Needs</h1>
+    <div id="memory-list">
+      <!-- Memory entries will be loaded here -->
+    </div>
+    <a href="memory.html" class="back-btn">Back to Memory Journal</a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const memoryList = document.getElementById('memory-list');
+      const storedEntries = JSON.parse(localStorage.getItem('scrapbookEntries')) || [];
+
+      if (storedEntries.length === 0) {
+        memoryList.innerHTML = '<p>No memories found!</p>';
+      } else {
+        storedEntries.forEach(entry => {
+          const entryDiv = document.createElement('div');
+          entryDiv.classList.add('memory-entry');
+
+          const title = document.createElement('h3');
+          title.textContent = entry.title;
+
+          const content = document.createElement('p');
+          content.textContent = entry.content;
+
+          entryDiv.appendChild(title);
+          entryDiv.appendChild(content);
+
+          if (entry.mediaType === 'image') {
+            const img = document.createElement('img');
+            img.src = entry.media;
+            entryDiv.appendChild(img);
+          } else if (entry.mediaType === 'video') {
+            const video = document.createElement('video');
+            video.src = entry.media;
+            video.controls = true;
+            entryDiv.appendChild(video);
+          }
+
+          memoryList.appendChild(entryDiv);
+        });
+      }
+    });
+  </script>
+</body>

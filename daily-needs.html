@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Set Daily Needs - Memory Journal</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f8ff;
+      background-image: url('https://i.pinimg.com/474x/56/46/8c/56468ce011e2a5f1981fc31999e774c4.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      padding: 2rem;
+      color: #333;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    h1 {
+      text-align: center;
+      color: #404040;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus, textarea:focus {
+      border-color: #3e3f41;
+      outline: none;
+    }
+
+    button {
+      background-color: #3e3f40;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #3a3b3c;
+      transform: translateY(-3px);
+    }
+
+    .scrapbook {
+      background: rgba(250, 250, 250, 0.9);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .scrapbook-item {
+      background-size: cover;
+      color: #333;
+      background-color: #f0f0f0;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .scrapbook-item:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .scrapbook-item h3 {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+
+    .scrapbook-item p {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+
+    #entry-detail {
+      display: none;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+    }
+
+    #entry-detail button {
+      margin-top: 1rem;
+      background-color: #221f1f;
+    }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Daily Needs Journal</h1>
+    <form id="daily-needs-form">
+      <label for="entry-title">Entry Title:</label>
+      <input type="text" id="entry-title" placeholder="Enter title for today's entry" required>
+
+      <label for="entry-content">Daily Notes:</label>
+      <textarea id="entry-content" rows="4" placeholder="Describe today's events, thoughts, or tasks..." required></textarea>
+
+      <button type="submit">Add to Scrapbook</button>
+    </form>
+
+    <h2>Scrapbook</h2>
+    <div class="scrapbook" id="scrapbook">
+      <!-- Entries will appear here dynamically -->
+    </div>
+
+    <button onclick="window.location.href='home.html'" style="background-color: #3f403f;">Back to Home</button>
+  </div>
+
+  <div id="entry-detail">
+    <h3 id="detail-title"></h3>
+    <p id="detail-content"></p>
+    <button onclick="closeEntryDetail()">Close</button>
+  </div>
+
+  <script>
+    const form = document.getElementById('daily-needs-form');
+    const scrapbook = document.getElementById('scrapbook');
+    const entryDetail = document.getElementById('entry-detail');
+    const detailTitle = document.getElementById('detail-title');
+    const detailContent = document.getElementById('detail-content');
+
+    // Load scrapbook entries from local storage
+    window.addEventListener('load', function() {
+      const storedEntries = JSON.parse(localStorage.getItem('scrapbookEntries')) || [];
+      storedEntries.forEach(entry => {
+        createScrapbookEntry(entry.title, entry.content);
+      });
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('entry-title').value;
+      const content = document.getElementById('entry-content').value;
+
+      if (title && content) {
+        createScrapbookEntry(title, content);
+        saveEntryToLocalStorage(title, content);
+        form.reset();
+      } else {
+        alert('Please fill out both fields.');
+      }
+    });
+
+    function createScrapbookEntry(title, content) {
+      const entryDiv = document.createElement('div');
+      entryDiv.classList.add('scrapbook-item');
+
+      const entryTitle = document.createElement('h3');
+      entryTitle.textContent = title;
+
+      const entryContent = document.createElement('p');
+      entryContent.textContent = content;
+
+      entryDiv.appendChild(entryTitle);
+      entryDiv.appendChild(entryContent);
+
+      scrapbook.appendChild(entryDiv);
+
+      entryDiv.addEventListener('click', function() {
+        detailTitle.textContent = title;
+        detailContent.textContent = content;
+        entryDetail.style.display = 'block';
+      });
+    }
+
+    function saveEntryToLocalStorage(title, content) {
+      const storedEntries = JSON.parse(localStorage.getItem('scrapbookEntries')) || [];
+      storedEntries.push({ title, content });
+      localStorage.setItem('scrapbookEntries', JSON.stringify(storedEntries));
+    }
+
+    function closeEntryDetail() {
+      entryDetail.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
